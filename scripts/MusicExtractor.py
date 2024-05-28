@@ -43,3 +43,14 @@ def extract_mp3_info(file_path):
         album_cover_image_location = cover_image_path
     
     return music_name, artist, album_name, album_cover_image_location
+
+# Go through each mp3 file in the given folder, and extract information to the sqlite database
+def process_handler(folder_path, db_path):
+    connection = create_database(db_path)
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith(",mp3"):
+                file_path = os.path.join(root, file)
+                music_name, artist, album_name, album_cover_image_location = extract_mp3_info(file_path)
+                database_add(connection, file_path, music_name, artist, album_name, album_cover_image_location)
+    connection.close()
