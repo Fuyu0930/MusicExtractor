@@ -4,6 +4,21 @@ from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, APIC, TIT2, TALB, TPE1
 
 
+# Create the sql database
+def create_database(db_path):
+    connect = sqlite3.connect(db_path)
+    cursor = connect.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS music_info (
+                    file_location TEXT,
+                    music_name TEXT,
+                    artist TEXT,
+                    album_name TEXT,
+                    album_cover_image_location TEXT
+                )''')
+    connect.commit()
+    return connect
+    
+
 # Extract information, including music name, artist, and album name
 def extract_mp3_info(file_path):
     audio = MP3(file_path, ID3=ID3)
