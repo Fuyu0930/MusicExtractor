@@ -17,6 +17,14 @@ def create_database(db_path):
                 )''')
     connect.commit()
     return connect
+
+
+# Add information to the database
+def database_add(connection, file_path, music_name, artist, album_name, album_cover_image_location):
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO music_info (file_location, music_name, artist, album_name, album_cover_image_location) VALUES (?, ?, ?, ?, ?)",
+                   (file_path, music_name, artist, album_name, album_cover_image_location))
+    connection.commit()
     
 
 # Extract information, including music name, artist, and album name
