@@ -30,8 +30,8 @@ def database_add(connection, file_path, music_name, artist, album_name, album_co
     
 
 # Extract information, including music name, artist, and album name
-def extract_mp3_info(file_path):
-    audio = MP3(file_path, ID3=ID3)
+def extract_mp3_info(music_file_path, cover_path):
+    audio = MP3(music_file_path, ID3=ID3)
     music_name = audio.get('TIT2', TIT2(encoding=3, text="Unknown Title")).text[0]
     artist = audio.get('TPE1', TPE1(encoding=3, text="Unknown Artist")).text[0]
     album_name = audio.get('TALB', TALB(encoding=3, text="Unkown Album")).text[0]
@@ -39,7 +39,7 @@ def extract_mp3_info(file_path):
     album_cover_image_location = None
     if audio.tags and 'APIC:' in audio.tags:
         album_cover = audio.tags['APIC:']
-        cover_image_path = file_path.replace('.mp3', '.jpg')
+        cover_image_path = cover_path + (music_file_path.replace('.mp3', '.jpg')).split('/')[-1]
         with open(cover_image_path, 'wb') as img:
             img.write(album_cover.data)
         album_cover_image_location = cover_image_path
@@ -47,14 +47,14 @@ def extract_mp3_info(file_path):
     return music_name, artist, album_name, album_cover_image_location
 
 # Go through each mp3 file in the given folder, and extract information to the sqlite database
-def process_handler(folder_path, db_path):
+def process_handler(music_path, db_path, cover_path):
     connection = create_database(db_path)
-    for root, _, files in os.walk(folder_path):
+    for root, _, files in os.walk(music_path):
         for file in files:
             if file.endswith(".mp3"):
-                file_path = os.path.join(root, file)
-                music_name, artist, album_name, album_cover_image_location = extract_mp3_info(file_path)
-                database_add(connection, file_path, music_name, artist, album_name, album_cover_image_location)
+                music_file_path = os.path.join(root, file)
+                music_name, artist, album_name, album_cover_image_location = extract_mp3_info(music_file_path, cover_path)
+                database_add(connection, music_file_path, music_name, artist, album_name, album_cover_image_location)
     connection.close()
 
 # A helper function to see all files in the current director
@@ -73,6 +73,7 @@ if __name__ == "__main__":
         print(f"-{item}")
     
     # Define paths and call the handler function
-    folder_path = "music/"
+    music_path = "music/"
     db_path = "database/music_database.db"
-    process_handler(folder_path, db_path)
+    cover_path = "covers/"
+    process_handler(music_path, db_path, cover_path)
