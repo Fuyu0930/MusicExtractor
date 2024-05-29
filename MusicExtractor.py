@@ -57,8 +57,22 @@ def process_handler(folder_path, db_path):
                 database_add(connection, file_path, music_name, artist, album_name, album_cover_image_location)
     connection.close()
 
-if __name__ == "__main__":
+# A helper function to see all files in the current director
+def check_current_directory():
+    current_dir = os.getcwd()
+    items = os.listdir(current_dir)
 
-    folder_path = "music/"
-    db_path = "database/"
+    return current_dir, items
+
+if __name__ == "__main__":
+    # Check the current directory
+    current_dir, items = check_current_directory()
+    print(f"Current Directory: {current_dir}")
+    print("Items:")
+    for item in items:
+        print(f"-{item}")
+    
+    # Define paths and call the handler function
+    folder_path = "/music"
+    db_path = "/database"
     process_handler(folder_path, db_path)
