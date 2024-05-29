@@ -38,7 +38,7 @@ def extract_mp3_info(file_path):
 
     album_cover_image_location = None
     if audio.tags and 'APIC:' in audio.tags:
-        album_cover = audio.tages['APIC:']
+        album_cover = audio.tags['APIC:']
         cover_image_path = file_path.replace('.mp3', '.jpg')
         with open(cover_image_path, 'wb') as img:
             img.write(album_cover.data)
@@ -73,6 +73,6 @@ if __name__ == "__main__":
         print(f"-{item}")
     
     # Define paths and call the handler function
-    folder_path = "/music"
-    db_path = "/database"
+    folder_path = "music/"
+    db_path = "database/music_database.db"
     process_handler(folder_path, db_path)
