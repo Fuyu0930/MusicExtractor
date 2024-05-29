@@ -1,6 +1,6 @@
 *.mp3
 *.jpg
-music/
-database/
-covers/
+music/*.mp3
+database/*.db
+covers/*.jpg
 .DS_Store
