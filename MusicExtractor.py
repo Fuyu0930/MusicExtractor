@@ -39,7 +39,7 @@ def extract_mp3_info(music_file_path, cover_path):
     album_cover_image_location = None
     if audio.tags and 'APIC:' in audio.tags:
         album_cover = audio.tags['APIC:']
-        cover_image_path = cover_path + (music_file_path.replace('.mp3', '.jpg')).split('/')[-1]
+        cover_image_path = cover_path + album_name + '.jpg'
         with open(cover_image_path, 'wb') as img:
             img.write(album_cover.data)
         album_cover_image_location = cover_image_path
