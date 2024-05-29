@@ -2,4 +2,5 @@
 *.jpg
 music/
 database/
+covers/
 .DS_Store
