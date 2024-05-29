@@ -73,7 +73,7 @@ if __name__ == "__main__":
         print(f"-{item}")
     
     # Define paths and call the handler function
-    music_path = "music/"
-    db_path = "database/music_database.db"
-    cover_path = "covers/"
+    music_path = "assets/music/"
+    db_path = "assets/database/music_database.db"
+    cover_path = "assets/covers/"
     process_handler(music_path, db_path, cover_path)
