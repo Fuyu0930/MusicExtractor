@@ -1,2 +1,5 @@
 *.mp3
 *.jpg
+music/
+database/
+.DS_Store

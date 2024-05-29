@@ -6,6 +6,8 @@ from mutagen.id3 import ID3, APIC, TIT2, TALB, TPE1
 
 # Create the sql database
 def create_database(db_path):
+    print("db_path is: ", db_path)
+    
     connect = sqlite3.connect(db_path)
     cursor = connect.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS music_info (
@@ -56,6 +58,7 @@ def process_handler(folder_path, db_path):
     connection.close()
 
 if __name__ == "__main__":
-    folder_path = ""
-    db_path = ""
+
+    folder_path = "music/"
+    db_path = "database/"
     process_handler(folder_path, db_path)
