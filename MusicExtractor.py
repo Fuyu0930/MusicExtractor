@@ -11,6 +11,7 @@ def create_database(db_path):
     connect = sqlite3.connect(db_path)
     cursor = connect.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS music_info (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     file_location TEXT,
                     music_name TEXT,
                     artist TEXT,
