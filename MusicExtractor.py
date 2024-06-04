@@ -23,10 +23,10 @@ def create_database(db_path):
 
 
 # Add information to the database
-def database_add(connection, file_path, music_name, artist, album_name, album_cover_image_location):
+def database_add(connection, file_path, music_name, artist, album_name, album_cover_image_location, song_id):
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO music_info (file_location, music_name, artist, album_name, album_cover_image_location) VALUES (?, ?, ?, ?, ?)",
-                   (file_path, music_name, artist, album_name, album_cover_image_location))
+    cursor.execute("INSERT INTO music_info (id, file_location, music_name, artist, album_name, album_cover_image_location) VALUES (?, ?, ?, ?, ?, ?)",
+                   (song_id, file_path, music_name, artist, album_name, album_cover_image_location))
     connection.commit()
     
 
@@ -50,13 +50,15 @@ def extract_mp3_info(music_file_path, cover_path):
 # Go through each mp3 file in the given folder, and extract information to the sqlite database
 def process_handler(music_path, db_path, cover_path):
     connection = create_database(db_path)
+    song_id = 0
     for root, _, files in os.walk(music_path):
         files = [file for file in files if file.endswith(".mp3")]
         files.sort()
         for file in files:
             music_file_path = os.path.join(root, file)
             music_name, artist, album_name, album_cover_image_location = extract_mp3_info(music_file_path, cover_path)
-            database_add(connection, music_file_path, music_name, artist, album_name, album_cover_image_location)
+            database_add(connection, music_file_path, music_name, artist, album_name, album_cover_image_location, song_id)
+            song_id += 1
     connection.close()
 
 # A helper function to see all files in the current director
