@@ -51,11 +51,12 @@ def extract_mp3_info(music_file_path, cover_path):
 def process_handler(music_path, db_path, cover_path):
     connection = create_database(db_path)
     for root, _, files in os.walk(music_path):
+        files = [file for file in files if file.endswith(".mp3")]
+        files.sort()
         for file in files:
-            if file.endswith(".mp3"):
-                music_file_path = os.path.join(root, file)
-                music_name, artist, album_name, album_cover_image_location = extract_mp3_info(music_file_path, cover_path)
-                database_add(connection, music_file_path, music_name, artist, album_name, album_cover_image_location)
+            music_file_path = os.path.join(root, file)
+            music_name, artist, album_name, album_cover_image_location = extract_mp3_info(music_file_path, cover_path)
+            database_add(connection, music_file_path, music_name, artist, album_name, album_cover_image_location)
     connection.close()
 
 # A helper function to see all files in the current director
